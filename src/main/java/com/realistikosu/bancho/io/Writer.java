@@ -1,15 +1,15 @@
-package com.realistikosu.binary.io;
+package com.realistikosu.bancho.io;
 
 import java.io.DataOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 // A class managing the writing of a byte stream following the "osu!" protocol.
-public class BanchoWriter {
+public class Writer {
     private final ByteArrayOutputStream _out;
     private final DataOutputStream _writer;
 
-    public BanchoWriter() {
+    public Writer() {
         _out = new ByteArrayOutputStream();
         _writer = new DataOutputStream(
                 _out
