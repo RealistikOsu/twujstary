@@ -3,6 +3,7 @@ package com.realistikosu.bancho.io;
 import java.io.DataOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 // A class managing the writing of a byte stream following the "osu!" protocol.
 public class Writer {
@@ -37,6 +38,24 @@ public class Writer {
         }
     }
 
+    public void writeIntList(ArrayList<Integer> numbers) throws IOException {
+        writeI16((short)numbers.size());
+
+        for (int number : numbers) {
+            writeI32(number);
+        }
+
+    }
+
+    public void writeIntList(int[] numbers) throws IOException {
+        writeI16((short)numbers.length);
+
+        for (int number : numbers) {
+            writeI32(number);
+        }
+
+    }
+
     /**
      * Writes a string `value` onto the buffer, adding the required metadata
      * for "osu!" to be able to read it.
@@ -55,7 +74,40 @@ public class Writer {
     }
 
     // Primitive types.
-    public void writeU8(int value) throws IOException {
+    public void writeU8(byte value) throws IOException {
         _writer.writeByte(value);
+    }
+
+    public void writeI16(short value) throws IOException {
+        _writer.writeShort(value);
+    }
+
+    public void writeI32(int value) throws IOException {
+        _writer.writeInt(value);
+    }
+
+    public void writeI64(long value) throws IOException {
+        _writer.writeLong(value);
+    }
+
+    // Dealing with unsigned types: https://stackoverflow.com/a/7830654
+    public void writeU16(int value) throws IOException {
+        _writer.writeShort((short) value);
+    }
+
+    public void writeU32(long value) throws IOException {
+        _writer.writeInt((int) value);
+    }
+
+    /**
+     * INCORRECTLY writes a U64. This function breaks for values between the
+     * i64 and u64 limits.
+     */
+    public void writeU64(long value) throws IOException {
+        _writer.writeLong(value);
+    }
+
+    public void writeF32(float value) throws IOException {
+        _writer.writeFloat(value);
     }
 }
