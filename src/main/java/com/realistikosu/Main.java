@@ -2,17 +2,23 @@ package com.realistikosu;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.realistikosu.bancho.web.BanchoController;
+import spark.Spark;
 
-@SpringBootApplication
+import com.realistikosu.bancho.web.BanchoHandler;
+
 public class Main {
-    private static final Logger logger = LogManager.getLogger("HelloWorld");
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
         logger.error("Hiya!");
-        SpringApplication.run(BanchoController.class);
+
+        Spark.port(80);
+
+        BanchoHandler banchoHandler = new BanchoHandler();
+
+        Spark.get("/", banchoHandler::mainHandlerGet);
+        Spark.post("/", banchoHandler::mainHandlerPost);
+
     }
 }
