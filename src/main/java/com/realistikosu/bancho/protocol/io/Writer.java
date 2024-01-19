@@ -1,4 +1,4 @@
-package com.realistikosu.bancho.io;
+package com.realistikosu.bancho.protocol.io;
 
 import java.io.DataOutputStream;
 import java.io.ByteArrayOutputStream;
