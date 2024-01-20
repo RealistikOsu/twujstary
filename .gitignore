@@ -39,3 +39,5 @@ build/
 
 # InteliJ
 .idea
+
+config.ini
