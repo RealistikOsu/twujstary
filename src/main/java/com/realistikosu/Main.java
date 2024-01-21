@@ -4,14 +4,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Properties;
 
+import com.zaxxer.hikari.HikariDataSource;
+import com.zaxxer.hikari.pool.HikariPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import spark.Spark;
+import com.zaxxer.hikari.HikariConfig;
 
 import com.realistikosu.bancho.web.BanchoHandler;
 
 public class Main {
-    private static final Logger logger = LogManager.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
     private static final String configPath = "config.ini";
 
     public static void main(String[] args) {
@@ -29,12 +32,39 @@ public class Main {
         }
         catch (Exception e) {
             logger.fatal("Could not read config.", e);
+            System.exit(1);
         }
 
-        // Fetching config variables.
-        int configHttpPort = Integer.parseInt(configReader.getProperty("HTTP_PORT"));
+        // MySQL Connection handling.
+        String mySQLUser = configReader.getProperty("MYSQL_USER");
+        String mySQLPassword = configReader.getProperty("MYSQL_PASSWORD");
+        String mySQLDatabase = configReader.getProperty("MYSQL_DATABASE");
+        int mySQLPort = Integer.parseInt(configReader.getProperty("MYSQL_PORT"));
+        String mySQLHost = configReader.getProperty("MYSQL_HOST");
 
-        BanchoHandler banchoHandler = new BanchoHandler();
+        // TODO: HikariConfig supports reading directly from `Properties`.
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl(
+                String.format(
+                        "jdbc:mysql://%s:%s/%s",
+                        mySQLHost,
+                        mySQLPort,
+                        mySQLDatabase
+                )
+        );
+        hikariConfig.setUsername(mySQLUser);
+        hikariConfig.setPassword(mySQLPassword);
+        hikariConfig.setDriverClassName("com.mysql.cj.jdbc.Driver");
+
+        HikariDataSource hikariPool = new HikariDataSource(hikariConfig);
+
+
+        BanchoHandler banchoHandler = new BanchoHandler(
+                hikariPool
+        );
+
+        // HTTP Server Configuration
+        int configHttpPort = Integer.parseInt(configReader.getProperty("HTTP_PORT"));
 
         logger.info("Starting server on port {}", configHttpPort);
         Spark.port(configHttpPort);

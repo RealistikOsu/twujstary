@@ -1,0 +1,7 @@
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config" name="whatDoICallThese">
+    <Loggers>
+        <Root level="info">
+
+        </Root>
+    </Loggers>
+</Configuration>
