@@ -13,6 +13,7 @@ public class BanchoHandler {
     private final SessionManager _sessionManager;
     private final HikariDataSource _mySqlSource;
 
+
     public BanchoHandler(HikariDataSource hikariDataSource) {
         _sessionManager = new SessionManager();
         _mySqlSource = hikariDataSource;
@@ -33,6 +34,6 @@ public class BanchoHandler {
             Request request,
             Response response
     ) {
-        return "HELLO!!!";
+        return "Harry piję wódkę!!!";
     }
 }
