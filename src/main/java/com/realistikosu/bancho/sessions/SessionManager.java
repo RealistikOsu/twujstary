@@ -1,6 +1,7 @@
 package com.realistikosu.bancho.sessions;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -51,7 +52,7 @@ public class SessionManager {
      * @param userId - The user ID for which all sessions will be returned for.
      * @return - A list of all sessions
      */
-    public ArrayList<Session> getByUserId(int userId) {
+    public List<Session> getByUserId(int userId) {
         ArrayList<Session> sessions = new ArrayList<>();
 
         for (Session s : _sessions.values()) {

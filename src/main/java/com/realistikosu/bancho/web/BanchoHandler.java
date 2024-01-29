@@ -5,6 +5,7 @@ import spark.Response;
 import com.zaxxer.hikari.HikariDataSource;
 
 import com.realistikosu.bancho.sessions.SessionManager;
+import com.realistikosu.bancho.sessions.Session;
 
 /**
  * The main entrypoint and state manager for 
@@ -25,6 +26,19 @@ public class BanchoHandler {
             Request request,
             Response response
     ) {
+        String token = request.headers("osu-token");
+
+        if (token == null) {
+            // Login logic.
+            return "L";
+        }
+
+        Session session = _sessionManager.getById(token);
+
+        if (session == null) {
+            // Get a re-log.
+
+        }
 
         return "hi osu!";
     }
