@@ -4,6 +4,8 @@ import com.realistikosu.bancho.protocol.io.Writer;
 import com.realistikosu.bancho.protocol.io.Reader;
 import com.realistikosu.osu.PacketId;
 
+import java.io.IOException;
+
 /**
  * An abstract class defining the API for a packet structure.
  */
@@ -12,13 +14,13 @@ public abstract class SerialisablePacket {
      * Deserialises a bytestream into the packet form.
      * @param reader - A reader with the header read.
      */
-    public SerialisablePacket(Reader reader) {}
+    public abstract void read(Reader reader) throws IOException;
 
     /**
      * Writes the given packet with its data into a writer object.
      * @return - A writer with the packet data and the header written.
      */
-    public abstract Writer write();
+    public abstract Writer write() throws IOException;
 
     /**
      * The Packet ID corresponding to the structure.
