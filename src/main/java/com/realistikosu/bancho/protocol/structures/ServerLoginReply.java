@@ -19,7 +19,7 @@ public class ServerLoginReply extends SerialisablePacket {
 
     @Override
     public void read(Reader reader) throws IOException {
-        this.loginUserId = reader.readI32();
+        this.loginUserId = reader.readInt();
     }
 
     @Override
@@ -32,14 +32,14 @@ public class ServerLoginReply extends SerialisablePacket {
         Writer writer = new Writer();
 
         // Header
-        writer.writeI16(
+        writer.writeShort(
                 packetId().getValue()
         );
-        writer.writeU8((byte)0);
-        writer.writeI32(minimumLength());
+        writer.writeByte((byte)0);
+        writer.writeInt(minimumLength());
 
         // Body
-        writer.writeI32(this.loginUserId);
+        writer.writeInt(this.loginUserId);
 
         return writer;
     }

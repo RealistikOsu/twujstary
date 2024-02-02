@@ -39,19 +39,19 @@ public class Writer {
     }
 
     public void writeIntList(ArrayList<Integer> numbers) throws IOException {
-        writeI16((short)numbers.size());
+        writeShort((short)numbers.size());
 
         for (int number : numbers) {
-            writeI32(number);
+            writeInt(number);
         }
 
     }
 
     public void writeIntList(int[] numbers) throws IOException {
-        writeI16((short)numbers.length);
+        writeShort((short)numbers.length);
 
         for (int number : numbers) {
-            writeI32(number);
+            writeInt(number);
         }
 
     }
@@ -74,28 +74,28 @@ public class Writer {
     }
 
     // Primitive types.
-    public void writeU8(byte value) throws IOException {
+    public void writeByte(byte value) throws IOException {
         _writer.writeByte(value);
     }
 
-    public void writeI16(short value) throws IOException {
+    public void writeShort(short value) throws IOException {
         _writer.writeShort(value);
     }
 
-    public void writeI32(int value) throws IOException {
+    public void writeInt(int value) throws IOException {
         _writer.writeInt(value);
     }
 
-    public void writeI64(long value) throws IOException {
+    public void writeLong(long value) throws IOException {
         _writer.writeLong(value);
     }
 
     // Dealing with unsigned types: https://stackoverflow.com/a/7830654
-    public void writeU16(int value) throws IOException {
+    public void writeUnsignedShort(int value) throws IOException {
         _writer.writeShort((short) value);
     }
 
-    public void writeU32(long value) throws IOException {
+    public void writeUnsignedInt(long value) throws IOException {
         _writer.writeInt((int) value);
     }
 
@@ -103,7 +103,7 @@ public class Writer {
      * INCORRECTLY writes a U64. This function breaks for values between the
      * i64 and u64 limits.
      */
-    public void writeU64(long value) throws IOException {
+    public void writeUnsignedLong(long value) throws IOException {
         _writer.writeLong(value);
     }
 

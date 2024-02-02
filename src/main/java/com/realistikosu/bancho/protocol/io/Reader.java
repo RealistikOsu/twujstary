@@ -22,7 +22,7 @@ public class Reader {
         byte b = 0;
 
         while (true) {
-            b = readU8();
+            b = readByte();
             result |= (long)(b & 0b01111111) << shift;
 
             if ((b & 0b10000000) == 0) {
@@ -36,7 +36,7 @@ public class Reader {
     }
 
     public String readString() throws IOException {
-        if (readU8() != 0xb) {
+        if (readByte() != 0xb) {
             return "";
         }
 
@@ -45,33 +45,37 @@ public class Reader {
         return new String(_reader.readNBytes((int)length));
     }
 
-    public byte readU8() throws IOException {
+    public byte readByte() throws IOException {
         return _reader.readByte();
     }
 
-    public short readI16() throws IOException {
+    public short readShort() throws IOException {
         return _reader.readShort();
     }
 
-    public int readI32() throws IOException {
+    public int readInt() throws IOException {
         return _reader.readInt();
     }
 
-    public long readI64() throws IOException {
+    public long readLong() throws IOException {
         return _reader.readLong();
     }
 
     // Unsigned copium: https://stackoverflow.com/a/7830654
-    public int readU16() throws IOException {
-        int res = (int)readI16();
+    public int readUnsignedShort() throws IOException {
+        int res = (int) readShort();
 
         return res & 0xFFFF;
     }
 
-    public long readU32() throws IOException {
-        long res = (long)readI32();
+    public long readUnsignedInt() throws IOException {
+        long res = (long) readInt();
 
         return res & 0xFFFFFFFFL;
+    }
+
+    public boolean readBool() throws IOException {
+        return readByte() == 1;
     }
 
     public boolean isExhausted() throws IOException {

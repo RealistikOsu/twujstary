@@ -11,16 +11,25 @@ import java.io.IOException;
  */
 public abstract class SerialisablePacket {
     /**
-     * Deserialises a bytestream into the packet form.
+     * Deserialises a byte stream into the packet form.
      * @param reader - A reader with the header read.
      */
-    public abstract void read(Reader reader) throws IOException;
+    public abstract SerialisablePacket read(Reader reader) throws IOException;
 
     /**
      * Writes the given packet with its data into a writer object.
      * @return - A writer with the packet data and the header written.
      */
-    public abstract Writer write() throws IOException;
+    public Writer write() throws IOException {
+        Writer writer = new Writer();
+        writer.writeShort(packetId().getValue());
+        writer.writeByte((byte) 0); // Pad
+        writer.writeInt(currentLength());
+
+        // Read body.
+
+        return writer;
+    }
 
     /**
      * The Packet ID corresponding to the structure.
@@ -29,8 +38,18 @@ public abstract class SerialisablePacket {
     public abstract PacketId packetId();
 
     /**
-     * Calculates the minimum size the packet structure can occupy.
+     * Calculates the minimum size the packet body can occupy.
      * @return - The minimum size in bytes.
      */
-    public abstract int minimumLength();
+    public static int minimumLength() {
+
+    }
+
+    /**
+     * Computes the current size of the packet body as if it were written.
+     * @return - The packet body
+     */
+    public int currentLength() {
+
+    }
 }
