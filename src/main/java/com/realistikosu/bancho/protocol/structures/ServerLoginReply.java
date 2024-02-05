@@ -18,34 +18,12 @@ public class ServerLoginReply extends SerialisablePacket {
     public ServerLoginReply() {}
 
     @Override
-    public void read(Reader reader) throws IOException {
-        this.loginUserId = reader.readInt();
+    public SerialisablePacket read(Reader reader) throws IOException {
+        return null;
     }
 
     @Override
     public PacketId packetId() {
         return PacketId.SRV_LOGIN_REPLY;
-    }
-
-    @Override
-    public Writer write() throws IOException {
-        Writer writer = new Writer();
-
-        // Header
-        writer.writeShort(
-                packetId().getValue()
-        );
-        writer.writeByte((byte)0);
-        writer.writeInt(minimumLength());
-
-        // Body
-        writer.writeInt(this.loginUserId);
-
-        return writer;
-    }
-
-    @Override
-    public int minimumLength() {
-        return 4;
     }
 }
