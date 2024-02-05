@@ -54,10 +54,10 @@ public class BanchoHandler {
 
         }
 
-        // TODO: Do transactions.
         Connection connection;
         try {
             connection = this._mySqlSource.getConnection();
+            connection.setAutoCommit(false);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -68,6 +68,16 @@ public class BanchoHandler {
         BanchoContext banchoContext = new BanchoContext(statsRepository);
 
         // Find the handler
+        try {
+            // TODO: Logic.
+            connection.commit();
+        } catch (Exception e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
 
         return "hi osu!";
     }
