@@ -107,7 +107,11 @@ public class Writer {
         _writer.writeLong(value);
     }
 
-    public void writeF32(float value) throws IOException {
+    public void writeFloat(float value) throws IOException {
         _writer.writeFloat(value);
+    }
+
+    public void writeBoolean(boolean value) throws IOException {
+        _writer.writeBoolean(value);
     }
 }

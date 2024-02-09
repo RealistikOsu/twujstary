@@ -5,6 +5,7 @@ import com.realistikosu.bancho.protocol.io.Reader;
 import com.realistikosu.osu.PacketId;
 import com.squareup.javapoet.MethodSpec;
 
+import java.io.IOError;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
@@ -13,7 +14,7 @@ import java.lang.reflect.Field;
  */
 public abstract class SerialisablePacket {
     public SerialisablePacket() {
-        MethodSpec
+
     }
     /**
      * Deserialises a byte stream into the packet form.
@@ -31,7 +32,51 @@ public abstract class SerialisablePacket {
         writer.writeByte((byte) 0); // Pad
         writer.writeInt(currentLength());
 
-        // Read body.
+        // Write body.
+        Field[] fields = this.getClass().getDeclaredFields();
+
+        for (Field f : fields) {
+            Class type = f.getType();
+
+            try {
+                Object value = f.get(this);
+                if (type == boolean.class) {
+                    writer.writeBoolean(
+                            (boolean)value
+                    );
+                } else if (type == byte.class) {
+                    writer.writeByte(
+                            (byte)value
+                    );
+                } else if (type == short.class) {
+                    writer.writeShort(
+                            (short)value
+                    );
+                } else if (type == int.class) {
+                    writer.writeInt(
+                            (int)value
+                    );
+                } else if (type == long.class) {
+                    writer.writeLong(
+                            (long)value
+                    );
+                } else if (type == float.class) {
+                    writer.writeFloat(
+                            (float)value
+                    );
+                } else if (type == String.class) {
+                    writer.writeString(
+                            (String)value
+                    );
+                } else if (type == int[].class) {
+                    writer.writeIntList(
+                            (int[])value
+                    );
+                }
+            } catch (IllegalAccessException | IOError e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         return writer;
     }

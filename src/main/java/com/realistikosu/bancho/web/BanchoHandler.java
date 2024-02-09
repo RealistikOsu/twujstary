@@ -54,6 +54,7 @@ public class BanchoHandler {
 
         }
 
+        // Context creation
         Connection connection;
         try {
             connection = this._mySqlSource.getConnection();
@@ -62,7 +63,6 @@ public class BanchoHandler {
             throw new RuntimeException(e);
         }
 
-        // Init repos.
         StatsRepository statsRepository = new StatsRepository(connection);
 
         BanchoContext banchoContext = new BanchoContext(statsRepository);
