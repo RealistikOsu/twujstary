@@ -20,7 +20,33 @@ public abstract class SerialisablePacket {
      * Deserialises a byte stream into the packet form.
      * @param reader - A reader with the header read.
      */
-    public abstract void read(Reader reader) throws IOException;
+    public void read(Reader reader) throws IOException {
+        Field[] fields = this.getClass().getDeclaredFields();
+
+        for (Field f : fields) {
+            Class type = f.getType();
+
+            try {
+                // YandereDev tribute
+                if (type == byte.class)
+                    f.set(this, reader.readByte());
+                else if (type == short.class)
+                    f.set(this, reader.readShort());
+                else if (type == int.class)
+                    f.set(this, reader.readInt());
+                else if (type == long.class)
+                    f.set(this, reader.readLong());
+                else if (type == float.class)
+                    f.set(this, reader.readFloat());
+                else if (type == String.class)
+                    f.set(this, reader.readString());
+                else if (type == int[].class)
+                    f.set(this, reader.readIntList())
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     /**
      * Writes the given packet with its data into a writer object.

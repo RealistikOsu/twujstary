@@ -78,6 +78,22 @@ public class Reader {
         return readByte() == 1;
     }
 
+    public float readFloat() throws IOException {
+        return _reader.readFloat();
+    }
+
+    public int[] readIntList() throws IOException {
+        int length = readUnsignedShort();
+
+        int[] values = new int[length];
+
+        for (int i = 0; i < length; ++i) {
+            values[i] = readInt();
+        }
+
+        return values;
+    }
+
     public boolean isExhausted() throws IOException {
         return _reader.available() != 0;
     }
