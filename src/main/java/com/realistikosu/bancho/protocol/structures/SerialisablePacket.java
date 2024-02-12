@@ -41,7 +41,7 @@ public abstract class SerialisablePacket {
                 else if (type == String.class)
                     f.set(this, reader.readString());
                 else if (type == int[].class)
-                    f.set(this, reader.readIntList())
+                    f.set(this, reader.readIntList());
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
