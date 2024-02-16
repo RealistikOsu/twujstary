@@ -1,5 +1,6 @@
 package com.realistikosu.bancho.web;
 
+import com.realistikosu.resources.users.UserRepository;
 import spark.Request;
 import spark.Response;
 import com.zaxxer.hikari.HikariDataSource;
@@ -64,8 +65,9 @@ public class BanchoHandler {
         }
 
         StatsRepository statsRepository = new StatsRepository(connection);
+        UserRepository userRepository = new UserRepository();
 
-        BanchoContext banchoContext = new BanchoContext(statsRepository);
+        BanchoContext banchoContext = new BanchoContext(statsRepository, userRepository);
 
         // Find the handler
         try {
