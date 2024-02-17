@@ -10,6 +10,10 @@ public class Writer {
     private final ByteArrayOutputStream _out;
     private final DataOutputStream _writer;
 
+    public ByteArrayOutputStream outputStream() {
+        return _out;
+    }
+
     public Writer() {
         _out = new ByteArrayOutputStream();
         _writer = new DataOutputStream(

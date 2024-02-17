@@ -1,5 +1,6 @@
 package com.realistikosu.bancho.web;
 
+import com.realistikosu.bancho.protocol.structures.ServerRestartNotify;
 import com.realistikosu.resources.users.UserRepository;
 import spark.Request;
 import spark.Response;
@@ -13,6 +14,8 @@ import com.realistikosu.osu.PacketId;
 import com.realistikosu.resources.stats.StatsRepository;
 
 import javax.sql.DataSource;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -51,7 +54,13 @@ public class BanchoHandler {
         Session session = _sessionManager.getById(token);
 
         if (session == null) {
-            // Get a re-log.
+            try {
+                ByteArrayOutputStream res = new ServerRestartNotify(0).write().outputStream();
+                response.raw().getOutputStream().write(res.toByteArray());
+                return null;
+            } catch (IOException e) {
+                return "LOL";
+            }
 
         }
 
@@ -67,7 +76,7 @@ public class BanchoHandler {
         StatsRepository statsRepository = new StatsRepository(connection);
         UserRepository userRepository = new UserRepository();
 
-        BanchoContext banchoContext = new BanchoContext(statsRepository, userRepository);
+        BanchoContext banchoContext = new BanchoContext(statsRepository, userRepository, session);
 
         // Find the handler
         try {

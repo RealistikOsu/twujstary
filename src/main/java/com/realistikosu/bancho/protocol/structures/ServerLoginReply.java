@@ -16,4 +16,13 @@ public class ServerLoginReply extends SerialisablePacket {
     public PacketId packetId() {
         return PacketId.SRV_LOGIN_REPLY;
     }
+
+    // Common builders.
+    public static ServerLoginReply loginFailed() {
+        return new ServerLoginReply(-1);
+    }
+
+    public static ServerLoginReply insufficientPrivileges() {
+        return new ServerLoginReply(-3);
+    }
 }
