@@ -3,6 +3,8 @@ package com.realistikosu.bancho.sessions;
 import com.realistikosu.bancho.sessions.SessionType;
 import com.realistikosu.osu.Modes;
 import com.realistikosu.osu.Mods;
+import com.realistikosu.resources.messages.Message; // TODO: Make a message interaction.
+import com.realistikosu.bancho.interactions.Notification;
 
 /**
  * Represents an active connection to the server that supports a defined set
@@ -41,9 +43,8 @@ public abstract class Session {
 
 
     // Interactions
-    public abstract void receivePrivateMessage(String message); // TODO: Use a message object or context.
-    public abstract void receivePublicMessage(String message); // TODO: Use a message object or context.
-    public abstract void receiveNotification(String message); // TODO: Maybe use actual objects here?
+    public abstract void receiveMessage(Message message);
+    public abstract void receiveNotification(Notification notification);
 
     /**
      * Notifies the client that the session is invalid
