@@ -13,6 +13,9 @@ public class Writer {
     public ByteArrayOutputStream outputStream() {
         return _out;
     }
+    public byte[] bytes() {
+        return _out.toByteArray();
+    }
 
     public Writer() {
         _out = new ByteArrayOutputStream();
@@ -117,5 +120,9 @@ public class Writer {
 
     public void writeBoolean(boolean value) throws IOException {
         _writer.writeBoolean(value);
+    }
+
+    public void merge(Writer writer) throws IOException {
+        writer._out.writeTo(_writer);
     }
 }

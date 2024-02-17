@@ -53,7 +53,10 @@ public abstract class SerialisablePacket {
      * @return - A writer with the packet data and the header written.
      */
     public Writer write() throws IOException {
-        Writer writer = new Writer();
+        return write(new Writer());
+    }
+
+    public Writer write(Writer writer) throws IOException {
         writer.writeShort(packetId().getValue());
         writer.writeByte((byte) 0); // Pad
         writer.writeInt(currentLength());

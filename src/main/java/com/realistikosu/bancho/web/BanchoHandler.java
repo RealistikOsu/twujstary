@@ -1,5 +1,6 @@
 package com.realistikosu.bancho.web;
 
+import com.realistikosu.bancho.protocol.structures.ServerNotification;
 import com.realistikosu.bancho.protocol.structures.ServerRestartNotify;
 import com.realistikosu.resources.users.UserRepository;
 import spark.Request;
@@ -10,6 +11,7 @@ import com.realistikosu.bancho.sessions.SessionManager;
 import com.realistikosu.bancho.sessions.Session;
 import com.realistikosu.bancho.protocol.structures.SerialisablePacket;
 import com.realistikosu.bancho.protocol.structures.ServerLoginReply;
+import com.realistikosu.bancho.protocol.io.Writer;
 import com.realistikosu.osu.PacketId;
 import com.realistikosu.resources.stats.StatsRepository;
 
@@ -48,15 +50,25 @@ public class BanchoHandler {
 
         if (token == null) {
             // Login logic.
-            return "L";
+            ServerNotification serverNotification = new ServerNotification("Skill issue???");
+            ServerLoginReply serverLoginReply = ServerLoginReply.loginFailed();
+            try {
+                Writer writer = serverNotification.write();
+                serverLoginReply.write(writer);
+                response.raw().getOutputStream().write(writer.bytes());
+            } catch (IOException e) {
+                return "AAA AA";
+            }
+
+            return null;
         }
 
         Session session = _sessionManager.getById(token);
 
         if (session == null) {
             try {
-                ByteArrayOutputStream res = new ServerRestartNotify(0).write().outputStream();
-                response.raw().getOutputStream().write(res.toByteArray());
+                byte[] res = new ServerRestartNotify(0).write().bytes();
+                response.raw().getOutputStream().write(res);
                 return null;
             } catch (IOException e) {
                 return "LOL";
